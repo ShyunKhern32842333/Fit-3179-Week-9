@@ -10,7 +10,7 @@
     "url": "/mnt/data/geoBoundaries-MYS-ADM2_simplified.topojson",
     "format": {
       "type": "topojson",
-      "feature": "geoBoundaries-MYS-ADM2"
+      "feature": "MYSADM2gbOpen"
     }
   },
   "layer": [
