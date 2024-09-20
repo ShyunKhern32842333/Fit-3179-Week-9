@@ -1,0 +1,62 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 600,
+  "title": "Literacy Rates in Malaysia by State (2019)",
+  "projection": {
+    "type": "mercator"
+  },
+  "data": {
+    "url": "/mnt/data/geoBoundaries-MYS-ADM2_simplified.topojson",
+    "format": {
+      "type": "topojson",
+      "feature": "geoBoundaries-MYS-ADM2"
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "geoshape",
+        "fill": "lightgray",
+        "stroke": "white"
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"State": "Perlis", "Literacy_Rate_Male": 99.6, "Literacy_Rate_Female": 99.4},
+          {"State": "Kedah", "Literacy_Rate_Male": 98.2, "Literacy_Rate_Female": 98.5},
+          {"State": "Pulau Pinang", "Literacy_Rate_Male": 99.4, "Literacy_Rate_Female": 98.9},
+          {"State": "Perak", "Literacy_Rate_Male": 99.3, "Literacy_Rate_Female": 99.3},
+          {"State": "Kelantan", "Literacy_Rate_Male": 97.5, "Literacy_Rate_Female": 98.8},
+          {"State": "Pahang", "Literacy_Rate_Male": 98.5, "Literacy_Rate_Female": 99.1},
+          {"State": "Selangor", "Literacy_Rate_Male": 99.5, "Literacy_Rate_Female": 99.3},
+          {"State": "Negeri Sembilan", "Literacy_Rate_Male": 96.8, "Literacy_Rate_Female": 99.6},
+          {"State": "Melaka", "Literacy_Rate_Male": 99.2, "Literacy_Rate_Female": 99.4},
+          {"State": "Johor", "Literacy_Rate_Male": 98.3, "Literacy_Rate_Female": 98.9},
+          {"State": "Wilayah Persekutuan Kuala Lumpur", "Literacy_Rate_Male": 98.9, "Literacy_Rate_Female": 98.7},
+          {"State": "Wilayah Persekutuan Putrajaya", "Literacy_Rate_Male": 98.9, "Literacy_Rate_Female": 100.0},
+          {"State": "Wilayah Persekutuan Labuan", "Literacy_Rate_Male": 95.6, "Literacy_Rate_Female": 91.9},
+          {"State": "Sarawak", "Literacy_Rate_Male": 98.9, "Literacy_Rate_Female": 99.4},
+          {"State": "Sabah", "Literacy_Rate_Male": 85.1, "Literacy_Rate_Female": 85.6},
+          {"State": "Terengganu", "Literacy_Rate_Male": 97.0, "Literacy_Rate_Female": 97.9}
+        ]
+      },
+      "mark": "geoshape",
+      "encoding": {
+        "color": {
+          "field": "Literacy_Rate_Male",
+          "type": "quantitative",
+          "scale": {
+            "scheme": "blues"
+          }
+        },
+        "tooltip": [
+          {"field": "State", "type": "nominal"},
+          {"field": "Literacy_Rate_Male", "type": "quantitative", "title": "Male Literacy Rate (%)"},
+          {"field": "Literacy_Rate_Female", "type": "quantitative", "title": "Female Literacy Rate (%)"}
+        ]
+      }
+    }
+  ]
+}
