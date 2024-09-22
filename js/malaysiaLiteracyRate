@@ -1,62 +1,57 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Literacy Rates by State (2019)",
   "width": 800,
-  "height": 600,
-  "title": "Literacy Rates in Malaysia by State (2019)",
-  "projection": {
-    "type": "mercator"
-  },
+  "height": 400,
+  "projection": {"type": "equalEarth"},
   "data": {
-    "url": "/mnt/data/geoBoundaries-MYS-ADM2_simplified.topojson",
-    "format": {
-      "type": "topojson",
-      "feature": "MYSADM2gbOpen"
-    }
+    "url": "https://raw.githubusercontent.com/ShyunKhern32842333/Fit-3179-Week-9/refs/heads/main/js/geoBoundaries-MYS-ADM1.topojson",
+    "format": {"type": "topojson", "feature": "MYSADM1gbOpen"}
   },
-  "layer": [
+  "transform": [
     {
-      "mark": {
-        "type": "geoshape",
-        "fill": "lightgray",
-        "stroke": "white"
+      "lookup": "properties.shapeName",
+      "from": {
+        "data": {
+          "url": "data/Malaysia_States_Literacy_2019.csv"
+        },
+        "key": "Country",
+        "fields": ["MaleLiteracyRate", "FemaleLiteracyRate"]
       }
     },
     {
-      "data": {
-        "values": [
-          {"State": "Perlis", "Literacy_Rate_Male": 99.6, "Literacy_Rate_Female": 99.4},
-          {"State": "Kedah", "Literacy_Rate_Male": 98.2, "Literacy_Rate_Female": 98.5},
-          {"State": "Pulau Pinang", "Literacy_Rate_Male": 99.4, "Literacy_Rate_Female": 98.9},
-          {"State": "Perak", "Literacy_Rate_Male": 99.3, "Literacy_Rate_Female": 99.3},
-          {"State": "Kelantan", "Literacy_Rate_Male": 97.5, "Literacy_Rate_Female": 98.8},
-          {"State": "Pahang", "Literacy_Rate_Male": 98.5, "Literacy_Rate_Female": 99.1},
-          {"State": "Selangor", "Literacy_Rate_Male": 99.5, "Literacy_Rate_Female": 99.3},
-          {"State": "Negeri Sembilan", "Literacy_Rate_Male": 96.8, "Literacy_Rate_Female": 99.6},
-          {"State": "Melaka", "Literacy_Rate_Male": 99.2, "Literacy_Rate_Female": 99.4},
-          {"State": "Johor", "Literacy_Rate_Male": 98.3, "Literacy_Rate_Female": 98.9},
-          {"State": "Wilayah Persekutuan Kuala Lumpur", "Literacy_Rate_Male": 98.9, "Literacy_Rate_Female": 98.7},
-          {"State": "Wilayah Persekutuan Putrajaya", "Literacy_Rate_Male": 98.9, "Literacy_Rate_Female": 100.0},
-          {"State": "Wilayah Persekutuan Labuan", "Literacy_Rate_Male": 95.6, "Literacy_Rate_Female": 91.9},
-          {"State": "Sarawak", "Literacy_Rate_Male": 98.9, "Literacy_Rate_Female": 99.4},
-          {"State": "Sabah", "Literacy_Rate_Male": 85.1, "Literacy_Rate_Female": 85.6},
-          {"State": "Terengganu", "Literacy_Rate_Male": 97.0, "Literacy_Rate_Female": 97.9}
-        ]
-      },
-      "mark": "geoshape",
-      "encoding": {
-        "color": {
-          "field": "Literacy_Rate_Male",
-          "type": "quantitative",
-          "scale": {
-            "scheme": "blues"
-          }
-        },
-        "tooltip": [
-          {"field": "State", "type": "nominal"},
-          {"field": "Literacy_Rate_Male", "type": "quantitative", "title": "Male Literacy Rate (%)"},
-          {"field": "Literacy_Rate_Female", "type": "quantitative", "title": "Female Literacy Rate (%)"}
-        ]
+      "calculate": "Gender === 'Male' ?  datum.MaleLiteracyRate : datum.FemaleLiteracyRate",
+      "as": "SelectedLiteracyRate"
+    }
+  ],
+  "params": [
+    {
+      "name": "Gender",
+      "value": "Male",
+      "bind": {
+        "input": "select",
+        "options": ["Male", "Female"],
+        "labels": ["Male Literacy Rate", "Female Literacy Rate"]
       }
     }
-  ]
+  ],
+  "mark": {"type": "geoshape", "stroke": "black"},
+  "encoding": {
+    "color": {
+      "field": "SelectedLiteracyRate",
+      "type": "quantitative",
+      "scale": {
+        "domain": [80, 100],
+        "range": ["lightblue", "darkblue"]
+      },
+      "legend": {
+        "title": "Literacy Rate (%)"
+      }
+    },
+    "tooltip": [
+      {"field": "properties.shapeName", "type": "nominal", "title": "State"},
+      {"field": "MaleLiteracyRate", "type": "quantitative", "format": ".1f", "title": "Male Literacy Rate (%)"},
+      {"field": "FemaleLiteracyRate", "type": "quantitative", "format": ".1f", "title": "Female Literacy Rate (%)"}
+    ]
+  }
 }
